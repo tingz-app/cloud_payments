@@ -1,12 +1,6 @@
-# Attention!!!
-
-*I am not able to maintain this repo anymore. I have no real projects which use this gem, so I do not understand the needs. I cannot test your changes in production env. So it would be nice if someone would take the care of this gem.*
-
-*Я больше не в состоянии поддерживать этот гем. У меня нет реальных проектов которые его используют, поэтому я не понимаю потребности которые возникают у пользователей. Я не могу его обновлять добавляя новые фичи и проверять закрытые баги на продакшене. Было бы здорово если бы кто-то забрал его к себе и заботился о нем (если есть такая потребность)*
-
 # CloudPayments
 
-CloudPayments ruby client (http://cloudpayments.eu/Docs/Integration)
+CloudPayments ruby client (https://developers.cloudpayments.ru/en/)
 
 [![Build Status](https://travis-ci.org/undr/cloud_payments.svg)](https://travis-ci.org/undr/cloud_payments)
 
@@ -139,7 +133,7 @@ end
 
 ## Contributing
 
-1. Fork it ( https://github.com/undr/cloud_payments/fork )
+1. Fork it ( https://github.com/platmart/cloud_payments/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
