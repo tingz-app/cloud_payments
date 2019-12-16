@@ -12,6 +12,11 @@ module CloudPayments
         instantiate(response[:model])
       end
 
+      def post3ds(attributes)
+        response = request(:post3ds, attributes)
+        instantiate(response[:model])
+      end
+
       private
 
       def instantiate(model)

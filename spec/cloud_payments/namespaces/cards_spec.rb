@@ -14,11 +14,11 @@ describe CloudPayments::Namespaces::Cards do
     card_cryptogram_packet: '01492500008719030128SM'
   } }
 
-  context do
+  describe '#charge' do
     context 'config.raise_banking_errors = false' do
       before { CloudPayments.config.raise_banking_errors = false }
 
-      describe '#charge' do
+      context do
         before{ stub_api_request('cards/charge/successful').perform }
         specify{ expect(subject.charge(attributes)).to be_instance_of(CloudPayments::Transaction) }
         specify{ expect(subject.charge(attributes)).not_to be_required_secure3d }
@@ -114,6 +114,45 @@ describe CloudPayments::Namespaces::Cards do
       context do
         before{ stub_api_request('cards/auth/failed').perform }
         specify{ expect{ subject.auth(attributes) }.to raise_error(CloudPayments::Client::GatewayErrors::InsufficientFunds) }
+      end
+    end
+  end
+
+  describe '#post3ds' do
+    let(:attributes){ { transaction_id: 12345, pa_res: 'AQ==' } }
+
+    context 'config.raise_banking_errors = false' do
+      before { CloudPayments.config.raise_banking_errors = false }
+
+      context do
+        before{ stub_api_request('cards/post3ds/successful').perform }
+        specify{ expect(subject.post3ds(attributes)).to be_instance_of(CloudPayments::Transaction) }
+        specify{ expect(subject.post3ds(attributes)).not_to be_required_secure3d }
+        specify{ expect(subject.post3ds(attributes)).to be_completed }
+        specify{ expect(subject.post3ds(attributes).id).to eq(12345) }
+      end
+
+      context do
+        before{ stub_api_request('cards/post3ds/failed').perform }
+        specify{ expect(subject.post3ds(attributes)).to be_instance_of(CloudPayments::Transaction) }
+        specify{ expect(subject.post3ds(attributes)).not_to be_required_secure3d }
+        specify{ expect(subject.post3ds(attributes)).to be_declined }
+        specify{ expect(subject.post3ds(attributes).id).to eq(12345) }
+        specify{ expect(subject.post3ds(attributes).reason).to eq('InsufficientFunds') }
+      end
+    end
+
+    context 'config.raise_banking_errors = true' do
+      before { CloudPayments.config.raise_banking_errors = true }
+
+      context do
+        before{ stub_api_request('cards/post3ds/successful').perform }
+        specify{ expect{ subject.post3ds(attributes) }.not_to raise_error }
+      end
+
+      context do
+        before{ stub_api_request('cards/post3ds/failed').perform }
+        specify{ expect{ subject.post3ds(attributes) }.to raise_error(CloudPayments::Client::GatewayErrors::InsufficientFunds) }
       end
     end
   end
