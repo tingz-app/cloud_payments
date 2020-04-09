@@ -5,7 +5,7 @@ module CloudPayments
 
     property :id, required: true
     property :account_id, required: true
-    property :description, required: true
+    property :description
     property :email, required: true
     property :amount, transform_with: DecimalTransform, required: true
     property :currency, required: true
