@@ -2,7 +2,7 @@
 
 CloudPayments ruby client (https://developers.cloudpayments.ru/en/)
 
-[![Build Status](https://travis-ci.org/undr/cloud_payments.svg)](https://travis-ci.org/undr/cloud_payments)
+[![Build Status](https://travis-ci.org/platmart/cloud_payments.svg)](https://travis-ci.org/platmart/cloud_payments)
 
 ## Installation
 
