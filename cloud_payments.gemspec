@@ -7,11 +7,11 @@ require 'cloud_payments/version'
 Gem::Specification.new do |spec|
   spec.name          = 'cloud_payments'
   spec.version       = CloudPayments::VERSION
-  spec.authors       = ['undr']
-  spec.email         = ['undr@yandex.ru']
+  spec.authors       = ['undr', 'kirillplatonov']
+  spec.email         = ['undr@yandex.ru', 'mail@kirillplatonov.com']
   spec.summary       = %q{CloudPayments ruby client}
   spec.description   = %q{CloudPayments ruby client}
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/platmart/cloud_payments'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
