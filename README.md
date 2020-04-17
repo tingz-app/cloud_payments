@@ -39,6 +39,12 @@ CloudPayments.configure do |c|
   c.logger = Logger.new('/dev/null')  # By default, it writes logs to stdout
   c.raise_banking_errors = true       # By default, it is not raising banking errors
 end
+
+# API client
+CloudPayments.client.payments.cards.charge(...)
+
+# Webhooks
+CloudPayments.webhooks.on_pay(...)
 ```
 
 #### Local configuration
