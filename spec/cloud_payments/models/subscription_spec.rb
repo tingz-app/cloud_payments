@@ -54,7 +54,6 @@ describe CloudPayments::Subscription do
 
     it_behaves_like :raise_without_attribute, :id
     it_behaves_like :raise_without_attribute, :account_id
-    it_behaves_like :raise_without_attribute, :description
     it_behaves_like :raise_without_attribute, :email
     it_behaves_like :raise_without_attribute, :amount
     it_behaves_like :raise_without_attribute, :currency_code
