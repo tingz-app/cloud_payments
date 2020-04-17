@@ -18,6 +18,9 @@ module CloudPayments
       @connection_options = {}
       @connection_block = nil
       @host = 'https://api.cloudpayments.ru'
+      if block_given?
+        yield self
+      end
     end
 
     def logger

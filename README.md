@@ -28,6 +28,8 @@ $ gem install cloud_payments
 
 ### Configuration
 
+#### Global configuration
+
 ```ruby
 CloudPayments.configure do |c|
   c.host = 'http://localhost:3000'    # By default, it is https://api.cloudpayments.ru
@@ -37,6 +39,22 @@ CloudPayments.configure do |c|
   c.logger = Logger.new('/dev/null')  # By default, it writes logs to stdout
   c.raise_banking_errors = true       # By default, it is not raising banking errors
 end
+```
+
+#### Local configuration
+
+```ruby
+config = CloudPayments::Config.new do |c|
+  # ...
+end
+
+# API client
+client = CloudPayments::Client.new(config)
+client.payments.cards.charge(...)
+
+# Webhooks
+webhooks = CloudPayments::Webhooks.new(config)
+webhooks.on_pay(...)
 ```
 
 ### Test method
