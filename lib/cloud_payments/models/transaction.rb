@@ -45,6 +45,8 @@ module CloudPayments
     property :refunded
     property :card_holder_message
     property :token
+    property :apple_pay
+    property :android_pay
 
     def required_secure3d?
       false
