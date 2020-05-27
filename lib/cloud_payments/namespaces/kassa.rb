@@ -13,7 +13,7 @@ module CloudPayments
       def receipt(attributes)
         attributes.fetch(:inn)  { raise InnNotProvided.new('inn attribute is required') }
         attributes.fetch(:type) { raise TypeNotProvided.new('type attribute is required') }
-        attributes.fetch(:inn)  { raise CustomerReceiptNotProvided.new('customer_receipt is required') }
+        attributes.fetch(:customer_receipt)  { raise CustomerReceiptNotProvided.new('customer_receipt is required') }
 
         request(:receipt, attributes)
       end
