@@ -47,6 +47,7 @@ module CloudPayments
     property :token
     property :apple_pay
     property :android_pay
+    property :escrow_accumulation_id
 
     def required_secure3d?
       false

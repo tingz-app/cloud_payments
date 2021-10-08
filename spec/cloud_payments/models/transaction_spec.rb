@@ -43,7 +43,8 @@ describe CloudPayments::Transaction do
       refunded: false,
       card_holder_message: 'Payment successful',
       name: 'CARDHOLDER NAME',
-      token: 'a4e67841-abb0-42de-a364-d1d8f9f4b3c0'
+      token: 'a4e67841-abb0-42de-a364-d1d8f9f4b3c0',
+      escrow_accumulation_id: '119d1f05-4fa8-4f35-85b6-09216a5a4fb6'
     } }
 
     specify{ expect(subject.id).to eq(504) }
@@ -82,6 +83,7 @@ describe CloudPayments::Transaction do
     specify{ expect(subject.name).to eq('CARDHOLDER NAME') }
     specify{ expect(subject.token).to eq('a4e67841-abb0-42de-a364-d1d8f9f4b3c0') }
     specify{ expect(subject.refunded).to eq(false) }
+    specify{ expect(subject.escrow_accumulation_id).to eq('119d1f05-4fa8-4f35-85b6-09216a5a4fb6') }
 
     context 'without any attributes' do
       let(:attributes){ {} }
