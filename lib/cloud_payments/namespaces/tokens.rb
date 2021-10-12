@@ -14,7 +14,7 @@ module CloudPayments
 
       def topup(attributes)
         response = request(:topup, attributes)
-        instantiate(response[:model])
+        Transaction.new(response[:model])
       end
     end
   end
