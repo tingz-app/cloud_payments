@@ -16,6 +16,7 @@ module CloudPayments
     end
 
     def perform_request(path, params = nil)
+      byebug # NOTE: REMOVE ON PR
       if path == :topup
         connection.basic_auth(config.payout_public_key, config.payout_secret_key)
       else
