@@ -19,6 +19,7 @@ module CloudPayments
       if path == 'payments/token/topup'
         connection.basic_auth(config.payout_public_key, config.payout_secret_key)
       else
+        byebug
         connection.basic_auth(config.public_key, config.secret_key)
       end
       response = connection.post(path, (params ? convert_to_json(params) : nil), headers)
