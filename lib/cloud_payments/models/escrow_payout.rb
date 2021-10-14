@@ -6,9 +6,5 @@ module CloudPayments
     def ids
       transaction_ids
     end
-
-    def required_secure3d?
-      true
-    end
   end
 end
