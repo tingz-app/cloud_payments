@@ -62,7 +62,8 @@ module CloudPayments
       key.unlink
       cert.unlink
       body.unlink
-      cleanup_sign(sign)
+      # cleanup_sign(sign)
+      sign
     end
 
     def payout_headers(sign)
