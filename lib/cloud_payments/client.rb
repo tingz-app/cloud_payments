@@ -44,8 +44,9 @@ module CloudPayments
     end
 
     def cleanup_sign(sign)
-      cms_format = /(?<=-----BEGIN CMS-----)(.*)(?=-----END CMS-----)/
-      sign.delete("\n").scan(cms_format)
+      # cms_format = /(?<=-----BEGIN CMS-----)(.*)(?=-----END CMS-----)/
+      # sign.delete("\n").scan(cms_format)
+      sign.delete("\n")
     end
 
     def sign(request_body)
@@ -62,8 +63,8 @@ module CloudPayments
       key.unlink
       cert.unlink
       body.unlink
-      # cleanup_sign(sign)
-      sign
+      cleanup_sign(sign)
+      # sign
     end
 
     def payout_headers(sign)
