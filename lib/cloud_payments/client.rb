@@ -20,10 +20,10 @@ module CloudPayments
       request_body = (params ? convert_to_json(params) : nil)
       byebug
       if path == 'payments/token/topup'
-        connection.basic_auth(config.payout_public_key, config.payout_secret_key)
-      else
         body_sign = sign(request_body)
         request_headers = payout_headers(body_sign)
+        connection.basic_auth(config.payout_public_key, config.payout_secret_key)
+      else
         connection.basic_auth(config.public_key, config.secret_key)
       end
 
