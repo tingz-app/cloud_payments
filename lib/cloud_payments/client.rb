@@ -18,7 +18,6 @@ module CloudPayments
     def perform_request(path, params = nil)
       request_headers = headers
       request_body = (params ? convert_to_json(params) : nil)
-      byebug
       if path == 'payments/token/topup'
         body_sign = sign(request_body)
         request_headers = payout_headers(body_sign)
@@ -45,7 +44,6 @@ module CloudPayments
     end
 
     def sign(request_body)
-      byebug
       key = Tempfile.new('key')
       key.write(config.payout_key)
       cert = Tempfile.new('cert')
@@ -55,7 +53,7 @@ module CloudPayments
       key.close
       cert.close
       body.close
-      sign = %x"openssl cms -sign -signer #{cert.path} -inkey #{key.path} -in #{body} -outform pem"
+      sign = %x"openssl cms -sign -signer #{cert.path} -inkey #{key.path} -in #{body.path} -outform pem"
       key.unlink
       cert.unlink
       body.unlink
