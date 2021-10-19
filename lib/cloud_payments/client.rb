@@ -50,7 +50,9 @@ module CloudPayments
       key.write(config.payout_key)
       cert = Tempfile.new('cert')
       cert.write(config.payout_cert)
-      sign = %x"openssl cms -sign -signer #{cert.path} -inkey #{key.path} -in #{request_body} -outform pem"
+      body = Tempfile.new('body')
+      body.write(request_body)
+      sign = %x"openssl cms -sign -signer #{cert.path} -inkey #{key.path} -in #{body} -outform pem"
       key.close
       key.unlink
       cert.close
