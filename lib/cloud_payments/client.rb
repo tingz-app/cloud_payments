@@ -45,7 +45,7 @@ module CloudPayments
 
     def cleanup_sign(sign)
       cms_format = /(?<=-----BEGIN CMS-----)(.*)(?=-----END CMS-----)/
-      sign.delete("\n").scan(cms_format)
+      sign.delete("\n").scan(cms_format)[0][0]
     end
 
     def sign(request_body)
@@ -59,7 +59,6 @@ module CloudPayments
       cert.close
       body.close
       sign = %x"openssl cms -sign -signer #{cert.path} -inkey #{key.path} -in #{body.path} -outform pem"
-      byebug
       key.unlink
       cert.unlink
       body.unlink
