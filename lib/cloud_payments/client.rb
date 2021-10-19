@@ -43,6 +43,11 @@ module CloudPayments
       { 'Content-Type' => 'application/json' }
     end
 
+    def cleanup_sign(sign)
+      cms_format = /(?<=-----BEGIN CMS-----)(.*)(?=-----END CMS-----)/
+      sign.delete("\n").scan(cms_format)
+    end
+
     def sign(request_body)
       key = Tempfile.new('key')
       key.write(config.payout_key)
@@ -57,7 +62,7 @@ module CloudPayments
       key.unlink
       cert.unlink
       body.unlink
-      sign
+      cleanup_sign(sign)
     end
 
     def payout_headers(sign)
