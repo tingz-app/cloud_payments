@@ -49,7 +49,6 @@ module CloudPayments
     end
 
     def sign(request_body)
-      byebug
       key = Tempfile.new('key')
       key.write(config.payout_key)
       cert = Tempfile.new('cert')
