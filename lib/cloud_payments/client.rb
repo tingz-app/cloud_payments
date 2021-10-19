@@ -44,7 +44,16 @@ module CloudPayments
     end
 
     def sign(request_body)
-      "openssl cms -sign -signer #{config.payout_cert} -inkey #{config.payout_key} -in #{request_body} -outform pem"
+      key = Tempfile.new('key')
+      key.write(config.payout_key)
+      cert = Tempfile.new('cert')
+      cert.write(config.payout_cert)
+      sign = %x"openssl cms -sign -signer #{config.payout_cert} -inkey #{key.path} -in #{request_body} -outform pem"
+      key.close
+      key.unlink
+      cert.close
+      cert.unlink
+      sign
     end
 
     def payout_headers(sign)
