@@ -55,7 +55,7 @@ module CloudPayments
       cert = Tempfile.new('cert')
       cert.write(config.payout_cert)
       body = Tempfile.new('body')
-      body.write(request_body.to_json)
+      body.write(JSON.parse(request_body).as_json)
       key.close
       cert.close
       body.close
