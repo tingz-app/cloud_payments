@@ -16,12 +16,17 @@ module CloudPayments
     end
 
     def perform_request(path, params = nil)
+      request_headers = headers
+      request_body = (params ? convert_to_json(params) : nil)
       if path == 'payments/token/topup'
         connection.basic_auth(config.payout_public_key, config.payout_secret_key)
       else
+        body_sign = sign(request_body)
+        request_headers = payout_headers(body_sign)
         connection.basic_auth(config.public_key, config.secret_key)
       end
-      response = connection.post(path, (params ? convert_to_json(params) : nil), headers)
+
+      response = connection.post(path, request_body, request_headers)
 
       Response.new(response.status, response.body, response.headers).tap do |response|
         raise_transport_error(response) if response.status.to_i >= 300
@@ -36,6 +41,14 @@ module CloudPayments
 
     def headers
       { 'Content-Type' => 'application/json' }
+    end
+
+    def sign(request_body)
+      "openssl cms -sign -signer #{config.payout_cert} -inkey #{config.payout_key} -in #{request_body} -outform pem"
+    end
+
+    def payout_headers(sign)
+      headers.merge("X-Signature" => sign)
     end
 
     def logger
