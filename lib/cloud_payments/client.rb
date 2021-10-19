@@ -49,12 +49,13 @@ module CloudPayments
     end
 
     def sign(request_body)
+      byebug
       key = Tempfile.new('key')
       key.write(config.payout_key)
       cert = Tempfile.new('cert')
       cert.write(config.payout_cert)
       body = Tempfile.new('body')
-      body.write(request_body)
+      body.write(request_body.to_json)
       key.close
       cert.close
       body.close
