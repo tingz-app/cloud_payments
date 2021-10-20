@@ -45,6 +45,7 @@ module CloudPayments
 
     def cleanup_sign(sign)
       cms_format = /(?<=-----BEGIN CMS-----)(.*)(?=-----END CMS-----)/
+      byebug
       sign.delete("\n").scan(cms_format)[0][0]
     end
 
