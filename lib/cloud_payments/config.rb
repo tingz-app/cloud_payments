@@ -2,7 +2,7 @@
 module CloudPayments
   class Config
     attr_accessor :connection_options, :serializer, :log, :public_key, :secret_key, :host, :raise_banking_errors,
-                  :payout_public_key, :payout_secret_key, :payout_cert, :payout_key
+                  :payout_public_key, :payout_secret_key, :payout_cert, :payout_key, :proxy
     attr_writer :logger
 
     DEFAULT_LOGGER = ->{

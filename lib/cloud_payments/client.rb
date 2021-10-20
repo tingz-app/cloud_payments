@@ -83,6 +83,8 @@ module CloudPayments
     end
 
     def build_connection
+      connection_options = config.connection_options
+      connection_options.merge!(proxy: config.proxy) if config.proxy.present?
       Faraday::Connection.new(config.host, config.connection_options, &config.connection_block)
     end
   end
