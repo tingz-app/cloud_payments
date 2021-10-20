@@ -49,19 +49,22 @@ module CloudPayments
     end
 
     def sign(request_body)
-      key = Tempfile.new('key')
-      key.write(config.payout_key)
-      cert = Tempfile.new('cert')
-      cert.write(config.payout_cert)
-      body = Tempfile.new('body')
-      body.write(JSON.parse(request_body).as_json)
-      key.close
-      cert.close
-      body.close
-      sign = %x"openssl cms -sign -signer #{cert.path} -inkey #{key.path} -in #{body.path} -outform pem"
-      key.unlink
-      cert.unlink
-      body.unlink
+      begin
+        key = Tempfile.new('key')
+        key.write(config.payout_key)
+        cert = Tempfile.new('cert')
+        cert.write(config.payout_cert)
+        body = Tempfile.new('body')
+        body.write(JSON.parse(request_body).as_json)
+        key.close
+        cert.close
+        body.close
+        sign = %x"openssl cms -sign -signer #{cert.path} -inkey #{key.path} -in #{body.path} -outform pem"
+      ensure
+        key.unlink
+        cert.unlink
+        body.unlink
+      end
       cleanup_sign(sign)
     end
 
