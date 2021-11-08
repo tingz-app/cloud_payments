@@ -3,14 +3,13 @@ module CloudPayments
   module Namespaces
     class Token < Base
       def topup(attributes)
-        response = request(:topup, attributes)
         byebug
-        if response[:model][:pa_req]
-          Secure3D.new(model)
+        response = request(:topup, attributes)
+        if response[:model][:success]
+          Transaction.new(response[:model])
         else
-          Transaction.new(model)
+          EscrowPayout.new(response[:model][:success])
         end
-        Transaction.new(response[:model])
       end
     end
   end
