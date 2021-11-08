@@ -22,13 +22,15 @@ module CloudPayments
         def convert_keys_from_api(attributes)
           attributes.each_with_object({}) do |(key, value), result|
             value = case value
-            when Hash
-              convert_keys_from_api(value)
-            when Array
-              value.map { |item| convert_keys_from_api(item) }
-            else
-              value
-            end
+                    when Hash
+                      convert_keys_from_api(value)
+                    when Array
+                      value.map do |item|
+                        convert_keys_from_api(item) unless item.is_a?(Numeric)
+                      end
+                    else
+                      value
+                    end
 
             key = key.to_s.gsub(/([A-Z\d]+)([A-Z][a-z])/, '\1_\2')
             key.gsub!(/([a-z\d])([A-Z])/, '\1_\2')
@@ -39,6 +41,7 @@ module CloudPayments
         end
 
         def convert_keys_to_api(attributes)
+          byebug
           attributes.each_with_object({}) do |(key, value), result|
             value = convert_keys_to_api(value) if value.is_a?(Hash)
 
