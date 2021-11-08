@@ -2,6 +2,7 @@
 require 'cloud_payments/namespaces/base'
 require 'cloud_payments/namespaces/cards'
 require 'cloud_payments/namespaces/tokens'
+require 'cloud_payments/namespaces/token'
 require 'cloud_payments/namespaces/payments'
 require 'cloud_payments/namespaces/subscriptions'
 require 'cloud_payments/namespaces/orders'

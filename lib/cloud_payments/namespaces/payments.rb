@@ -10,6 +10,10 @@ module CloudPayments
         Tokens.new(client, resource_path)
       end
 
+      def token
+        Token.new(client, resource_path)
+      end
+
       def confirm(id, amount)
         request(:confirm, transaction_id: id, amount: amount)[:success]
       end

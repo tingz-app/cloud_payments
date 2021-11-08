@@ -16,8 +16,17 @@ module CloudPayments
     end
 
     def perform_request(path, params = nil)
-      connection.basic_auth(config.public_key, config.secret_key)
-      response = connection.post(path, (params ? convert_to_json(params) : nil), headers)
+      request_headers = headers
+      request_body = (params ? convert_to_json(params) : nil)
+      if path == 'payments/token/topup'
+        body_sign = sign(request_body)
+        request_headers = payout_headers(body_sign)
+        connection.basic_auth(config.payout_public_key, config.payout_secret_key)
+      else
+        connection.basic_auth(config.public_key, config.secret_key)
+      end
+
+      response = connection.post(path, request_body, request_headers)
 
       Response.new(response.status, response.body, response.headers).tap do |response|
         raise_transport_error(response) if response.status.to_i >= 300
@@ -34,6 +43,35 @@ module CloudPayments
       { 'Content-Type' => 'application/json' }
     end
 
+    def cleanup_sign(sign)
+      cms_format = /(?<=-----BEGIN CMS-----)(.*)(?=-----END CMS-----)/
+      sign.delete("\n").match(cms_format).to_s.strip
+    end
+
+    def sign(request_body)
+      begin
+        key = Tempfile.new('key')
+        key.write(config.payout_key)
+        cert = Tempfile.new('cert')
+        cert.write(config.payout_cert)
+        body = Tempfile.new('body')
+        body.write(request_body)
+        key.close
+        cert.close
+        body.close
+        sign = %x"openssl cms -sign -signer #{cert.path} -inkey #{key.path} -in #{body.path} -outform pem"
+      ensure
+        key.unlink
+        cert.unlink
+        body.unlink
+      end
+      cleanup_sign(sign)
+    end
+
+    def payout_headers(sign)
+      headers.merge("X-Signature" => sign)
+    end
+
     def logger
       config.logger
     end
@@ -45,6 +83,8 @@ module CloudPayments
     end
 
     def build_connection
+      connection_options = config.connection_options
+      connection_options.merge!(proxy: config.proxy) if config.proxy.present?
       Faraday::Connection.new(config.host, config.connection_options, &config.connection_block)
     end
   end
