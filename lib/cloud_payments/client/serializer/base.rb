@@ -41,7 +41,6 @@ module CloudPayments
         end
 
         def convert_keys_to_api(attributes)
-          byebug
           attributes.each_with_object({}) do |(key, value), result|
             value = convert_keys_to_api(value) if value.is_a?(Hash)
 
